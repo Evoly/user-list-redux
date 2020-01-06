@@ -1,0 +1,120 @@
+
+/*
+Миксин для элементов, которые должны сохранять определенное соотношение сторон (напр., блок с видео)
+Пример использования:
+div {
+  @include ratio(16,9);
+} */
+@mixin ratio($x,$y, $pseudo: false) {
+  $padding: unquote(($y/$x) *100+'%');
+
+  @if $pseudo {
+
+    &::before {
+      @include pseudo($pos: relative);
+
+      width: 100%;
+      padding-top: $padding;
+    }
+  }
+
+  @else { padding-top: $padding; }
+}
+
+/*
+Миксин для базовых параметров псевдоэлементов.
+Пример использования:
+
+div::after {
+  @include pseudo;
+  top: 10px;
+  left: 10px;
+  width: 150px;
+}
+*/
+@mixin pseudo($display: block, $pos: absolute, $content: '') {
+  content: $content;
+  display: $display;
+  position: $pos;
+}
+
+/*
+Миксин для треугольников, сделанных через :before и :after
+Пример:
+
+div::after {
+  @include triangle(black, top, 10px);
+}
+*/
+@mixin triangle($color, $direction, $size: 6px, $position: absolute, $round: false) {
+  @include pseudo($pos: $position);
+
+  width: 0;
+  height: 0;
+
+  @if $round {
+    border-radius: 3px;
+  }
+
+  @if $direction == down {
+    border-left: $size solid transparent;
+    border-right: $size solid transparent;
+    border-top: $size solid $color;
+    margin-top: 0 - round($size / 2.5);
+  }
+
+  @else if $direction == up {
+    border-left: $size solid transparent;
+    border-right: $size solid transparent;
+    border-bottom: $size solid $color;
+    margin-bottom: 0 - round($size / 2.5);
+  }
+
+  @else if $direction == right {
+    border-top: $size solid transparent;
+    border-bottom: $size solid transparent;
+    border-left: $size solid $color;
+    margin-right: -$size;
+  }
+
+  @else if  $direction == left {
+    border-top: $size solid transparent;
+    border-bottom: $size solid transparent;
+    border-right: $size solid $color;
+    margin-left: -$size;
+  }
+}
+
+/*
+Миксин для медиа-запросов
+Пример использования:
+div {
+  @include screen('phone') {
+    // Правила для разрешений выше 'phone'
+  }
+
+  @include screen('phone', max) {
+    // Правила для разрешений ниже 'phone'
+  }
+}
+*/
+$breakpoints: (
+  'xs': 360px,
+  'phone': 576px,
+  'tablet': 768px,
+  'desktop': 1248px
+);
+
+@mixin screen($width, $type: min) {
+  @if map_has_key($breakpoints, $width) {
+    $width: map_get($breakpoints, $width);
+
+    @if $type == max {
+      $width: $width - 1px;
+    }
+
+    @media only screen and (#{$type}-width: $width) {
+      @content;
+    }
+  }
+}

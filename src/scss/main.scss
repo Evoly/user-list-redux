@@ -1,0 +1,130 @@
+@import 'work/variables';
+// @import "node_modules/bootstrap/scss/bootstrap";
+// @import "node_modules/bootstrap-select-v4/sass/bootstrap-select";
+@import 'work/_mixins.scss';
+@import 'work/_fonts.scss';
+@import 'work/_text-styles.scss';
+// @import 'work/button';
+// @import 'work/perfect-scrollbar';
+// @import 'work/jquery.fancybox';
+// @import 'work/nouislider';
+// @import 'work/jquery.countdown';
+//@import "../blocks/**/*";
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: $font-main;
+  font-size: 16px;
+  color: $color-basic;
+}
+.container {
+  width: 100%;
+  padding-left: $container-padding;
+  padding-right: $container-padding;
+  margin: 0 auto;
+  max-width: $container-width;
+  box-sizing: border-box;
+
+  @include screen('sm') {
+    padding-left: 95px;
+    padding-right: 95px;
+  }
+}
+
+.flex {
+    display: flex;
+}
+
+img {
+    max-width: 100%;
+}
+
+h1 {
+  color: #000;
+
+  span {
+    font-style: italic;
+    font-size: 30px;
+  }
+}
+
+ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.header{
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.nav {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  align-items: center;
+  text-transform: uppercase;
+
+
+  &__link {
+    padding: 10px;
+    color: inherit;
+
+    &:hover {
+      opacity: .7;
+      transition: $ease-main;
+    }
+  }
+}
+
+.content {
+  flex-direction: column;
+  padding-bottom: 40px;
+
+  &__item {
+    margin-bottom: 15px;
+  }
+
+  &__link {
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px solid $color-basic;
+
+    &:hover {
+      opacity: .6;
+      transition: $ease-main;
+    }
+  }
+
+  &__title {
+    font-size: 20px;
+    color: #000;
+  }
+}
+
+.btn {
+  display: inline-flex;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+  background-color: $btn-background;
+  border-radius: 3px;
+  color: #fff;
+
+  &:hover {
+    background-color: $btn-background-hover;
+    transition: $ease-main;
+  }
+}

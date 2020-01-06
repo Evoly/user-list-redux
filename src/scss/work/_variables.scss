@@ -1,0 +1,41 @@
+
+// grid
+
+$container-width: 1200px; // Максимальная ширина контейнера контента
+$container-padding: 30px; // Отступы слева и справа у контейнера
+$grid-container-width: 100%; // Ширина контейнера сетки
+$grid-cols: 12; // Количество колонок в сетке
+$grid-gap: 20px; // Расстояние между колонками
+$grid-gap-vertical: 20px; // Расстояние между строками в сетке
+$grid-col-width: $grid-container-width/$grid-cols; // Ширина одной колонки
+$breakpoints: (
+  'xl': 1440px,
+  'lg': 1200px,
+  'md': 1024px,
+  'sm': 768px,
+  'bsm': 680px,
+  'msm': 560px,
+  'xsm': 480px,
+  'xs': 320px
+);
+
+
+//colors
+
+$color-basic: #666;
+$blue: #E6EEF2;
+$dark-blue: darken($color: #E6EEF2, $amount: 10%);
+
+$link-hover: #a1afb7;
+$btn-background: #879094;
+$btn-background-hover: darken($color: #879094, $amount: 5%);
+
+
+
+
+// Transitions
+$ease-main: .3s ease;
+
+
+// Fonts
+$font-main: Arial, sans-serif;
