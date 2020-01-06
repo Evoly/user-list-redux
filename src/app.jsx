@@ -17,6 +17,8 @@ import Header from './component/Header';
 
 const initialState = {
   users: [],
+  posts: [],
+  userId: 2,
   isLoading: false,
   error: null,
 };
@@ -26,10 +28,12 @@ function reducer(state = initialState, action) {
   console.log('action', action);
   switch (action.type) {
     case 'REQUEST_USER':
-      console.log('state', state);
       return { ...state, isLoading: true, error: null };
     case 'REQUEST_USER_SUCCESS':
       return { ...state, isLoading: false, users: action.payload.users };
+    case 'REQUEST_POSTS_SUCCESS':
+      console.log('state posts', state);
+      return { ...state, isLoading: false, posts: action.payload.posts };
     case 'REQUEST_USER_FAILURE':
       return {
         ...state,
@@ -63,16 +67,9 @@ Comments.propTypes = {
   location: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-const Posts = (props) => {
-  const { location } = props;
-  return (
-    <PostsList id={location.userId} name={location.userName} />
-  );
-};
-
-Posts.propTypes = {
-  location: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-};
+const Posts = () => (
+  <PostsList />
+);
 
 const Home = () => (
   <UserList />
@@ -94,7 +91,7 @@ const App = () => (
     <BrowserRouter>
       <div>
         <Header />
-        <Main id="0" />
+        <Main />
       </div>
     </BrowserRouter>
   </Provider>

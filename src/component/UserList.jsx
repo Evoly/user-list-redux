@@ -1,49 +1,30 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import requestUsers, { fetchUsers } from '../actions';
+import { fetchUsers, fetchPostsById } from '../actions';
 
-// const urlUsers = 'https://jsonplaceholder.typicode.com/users';
+const urlUsers = 'https://jsonplaceholder.typicode.com/users';
 
 const mapStateToProps = (state) => {
   const props = {
     isLoading: state.isLoading,
     users: state.users,
+    userId: state.id,
     error: state.error,
   };
   return props;
 };
 
+function handleClick(id) {
+  return this.props.dispatch(fetchPostsById(id));
+}
+
 class UserList extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     isLoading: true,
-  //     users: [],
-  //     error: null,
-  //   };
-  // }
-
   componentDidMount() {
-    this.props.dispatch(fetchUsers());
+    this.props.dispatch(fetchUsers(urlUsers));
   }
-
-  // componentDidMount() {
-  //   this.fetchData();
-  // }
-
-  // async fetchData() {
-  //   const response = await axios.get(urlUsers);
-  //   try {
-  //     this.setState({
-  //       users: response.data,
-  //       isLoading: false,
-  //     });
-  //   } catch (error) {
-  //     this.setState({ error, isLoading: false });
-  //   }
-  // }
 
   render() {
     const { isLoading, users } = this.props;
@@ -56,8 +37,11 @@ class UserList extends Component {
             <Link
               to={{
                 pathname: '/posts',
-                userId: id,
-                userName: name,
+              }}
+              onClick={() => {
+                console.log('id user', id)
+                console.log('id user', this.props.userId)
+                handleClick(id)
               }}
               className="content__link"
             >
@@ -81,5 +65,16 @@ class UserList extends Component {
     );
   }
 }
+
+UserList.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  users: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+    }).isRequired,
+  ).isRequired,
+};
 
 export default connect(mapStateToProps)(UserList);

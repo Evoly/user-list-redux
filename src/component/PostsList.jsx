@@ -1,48 +1,39 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
-import axios from 'axios';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
+import { fetchPosts } from '../actions';
 
 const url = 'https://jsonplaceholder.typicode.com/posts';
 
+const mapStateToProps = (state) => {
+  const props = {
+    isLoading: state.isLoading,
+    posts: state.posts,
+    userId: state.userId,
+    error: state.error,
+  };
+  console.log('props postlist', props);
+  return props;
+};
+
 class PostsList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: true,
-      posts: [],
-      error: null,
-    };
-  }
-
   componentDidMount() {
-    this.fetchData();
+    this.props.dispatch(fetchPosts(url, this.props));
   }
-
-  async fetchData() {
-    const { id } = this.props;
-    const urlPosts = id ? `${url}?userId=${id}` : url;
-    const response = await axios.get(urlPosts);
-    try {
-      this.setState({
-        posts: response.data,
-        isLoading: false,
-      });
-    } catch (error) {
-      this.setState({ error, isLoading: false });
-    }
-  }
-
 
   render() {
     const { name } = this.props;
     const title = name ? `${name} posts` : 'Posts list';
-    const { isLoading, posts } = this.state;
+    const { isLoading, posts } = this.props;
+    console.log('posts props', this.props);
+    console.log('posts', posts);
 
     let content = [];
 
     if (!isLoading) {
-      const { userId } = posts[0];
+      // const { userId } = posts[0] ? posts[0] : 0;
 
       content = posts.map(({
         title, body, id, userId,
@@ -82,6 +73,8 @@ class PostsList extends Component {
 }
 
 PostsList.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired,
   id: PropTypes.number,
   name: PropTypes.string,
 };
@@ -91,4 +84,4 @@ PostsList.defaultProps = {
   name: '',
 };
 
-export default withRouter(PostsList);
+export default connect(mapStateToProps)(PostsList);
