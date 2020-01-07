@@ -3,7 +3,10 @@ import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+// import {initialState as state } from './reducer'
+
 import { fetchUsers, fetchPostsById } from '../actions';
+import store from '../reducer';
 
 const urlUsers = 'https://jsonplaceholder.typicode.com/users';
 
@@ -25,6 +28,7 @@ class UserList extends Component {
 
   render() {
     const { isLoading, users } = this.props;
+    console.log(' this.props:', this.props);
     let content = [];
 
     const handleClick = (id) =>  this.props.dispatch(fetchPostsById(id));

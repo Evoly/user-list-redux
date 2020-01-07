@@ -1,18 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 
 import {
   BrowserRouter, Switch, Route,
 } from 'react-router-dom';
 
 import store from './reducer';
+
 import UserList from './component/UserList';
 import PostsList from './component/PostsList';
 import CommentsList from './component/CommentsList';
 import Header from './component/Header';
 // import NotFound from './component/NotFound';
 
+// const store = createStore(
+//   reducer,
+//   applyMiddleware(thunk),
+// );
 
 const Comments = (props) => {
   const { location } = props;

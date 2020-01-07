@@ -2,14 +2,14 @@ import axios from 'axios';
 
 // const urlUsers = 'https://jsonplaceholder.typicode.com/users';
 
-export const REQUEST_USER = 'REQUEST_USER';
+export const REQUEST_DATA = 'REQUEST_DATA';
 export const REQUEST_USER_SUCCESS = 'REQUEST_USER_SUCCESS';
 export const REQUEST_POSTS_SUCCESS = 'REQUEST_POSTS_SUCCESS';
 export const REQUEST_POSTS_BY_ID = 'REQUEST_POSTS_BY_ID';
 export const REQUEST_USER_FAILURE = 'REQUEST_USER_FAILURE';
 
 const requestUsers = () => ({
-  type: REQUEST_USER,
+  type: REQUEST_DATA,
 });
 
 export default requestUsers;
