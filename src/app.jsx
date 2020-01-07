@@ -1,34 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 
 import {
   BrowserRouter, Switch, Route,
 } from 'react-router-dom';
 
-import store from './reducer';
+import reducer from './reducer';
 import UserList from './component/UserList';
 import PostsList from './component/PostsList';
 import CommentsList from './component/CommentsList';
 import Header from './component/Header';
 // import NotFound from './component/NotFound';
 
+const store = createStore(
+  reducer,
+  applyMiddleware(thunk),
+);
 
-const Comments = (props) => {
-  const { location } = props;
-  return (
-    <CommentsList
-      id={location.postId}
-      name={location.name}
-      userId={location.userId}
-      postTitle={location.postTitle}
-    />
-  );
-};
-
-Comments.propTypes = {
-  location: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-};
+const Comments = () => (
+  <CommentsList />
+);
 
 const Posts = () => (
   <PostsList />

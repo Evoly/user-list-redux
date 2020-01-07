@@ -1,38 +1,27 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import axios from 'axios';
+import { fetchComments } from '../actions';
 
 const url = 'https://jsonplaceholder.typicode.com/comments';
 
+const mapStateToProps = (state) => {
+  const props = {
+    isLoading: state.isLoading,
+    comments: state.comments,
+    userId: state.userId,
+    postId: state.postId,
+    error: state.error,
+  };
+  console.log('props comments', props);
+  return props;
+};
+
 class ComentsList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: true,
-      comments: [],
-      error: null,
-    };
-  }
-
-
   componentDidMount() {
-    this.fetchData();
-  }
-
-  async fetchData() {
-    const { id } = this.props;
-    const urlPosts = id ? `${url}?postId=${id}` : url;
-    const response = await axios.get(urlPosts);
-    try {
-      this.setState({
-        comments: response.data,
-        isLoading: false,
-      });
-    } catch (error) {
-      this.setState({ error, isLoading: false });
-    }
+    this.props.dispatch(fetchComments(url, this.props));
   }
 
   render() {
@@ -41,7 +30,7 @@ class ComentsList extends Component {
     const title = postTitle ? (
       <h1> Comments on <span> &quot;{postTitle}&quot;</span> </h1>) : <h1> Comment list </h1>;
 
-    const { isLoading, comments } = this.state;
+    const { isLoading, comments } = this.props;
 
     let content = [];
 
@@ -82,7 +71,7 @@ class ComentsList extends Component {
 ComentsList.propTypes = {
   id: PropTypes.number,
   name: PropTypes.string,
-  userId: PropTypes.string,
+  userId: PropTypes.number,
   postTitle: PropTypes.string,
 };
 
@@ -93,5 +82,4 @@ ComentsList.defaultProps = {
   postTitle: '',
 };
 
-
-export default withRouter(ComentsList);
+export default connect(mapStateToProps)(ComentsList);

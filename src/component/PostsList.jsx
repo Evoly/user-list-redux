@@ -3,7 +3,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { fetchPosts } from '../actions';
+import { fetchPosts, fetchCommentsById } from '../actions';
 
 const url = 'https://jsonplaceholder.typicode.com/posts';
 
@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
     isLoading: state.isLoading,
     posts: state.posts,
     userId: state.userId,
+    postId: state.postId,
     error: state.error,
   };
   console.log('props postlist', props);
@@ -24,6 +25,8 @@ class PostsList extends Component {
   }
 
   render() {
+    const handleClick = (id) =>  this.props.dispatch(fetchCommentsById(id));
+
     const { name } = this.props;
     const title = name ? `${name} posts` : 'Posts list';
     const { isLoading, posts } = this.props;
@@ -43,11 +46,8 @@ class PostsList extends Component {
             <Link
               to={{
                 pathname: '/comments',
-                postId: id,
-                userId,
-                name,
-                postTitle: title,
               }}
+              onClick={() => handleClick(id)}
               className="content__link"
             >
               {title}
