@@ -14,10 +14,13 @@ const requestUsers = () => ({
 
 export default requestUsers;
 
-export const fetchPostsById = (userId) => ({
-  type: REQUEST_POSTS_BY_ID,
-  payload: { userId },
-});
+export const fetchPostsById = (userId) => {
+  console.log('userId action', userId);
+  return ({
+    type: REQUEST_POSTS_BY_ID,
+    payload: { userId },
+  });
+};
 
 export const fetchUsersSuccess = (users) => ({
   type: REQUEST_USER_SUCCESS,

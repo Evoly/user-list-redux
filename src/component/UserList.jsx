@@ -17,9 +17,6 @@ const mapStateToProps = (state) => {
   return props;
 };
 
-function handleClick(id) {
-  return this.props.dispatch(fetchPostsById(id));
-}
 
 class UserList extends Component {
   componentDidMount() {
@@ -30,6 +27,8 @@ class UserList extends Component {
     const { isLoading, users } = this.props;
     let content = [];
 
+    const handleClick = (id) =>  this.props.dispatch(fetchPostsById(id));
+
     if (!isLoading) {
       content = users.map(({ name, id }) => (
         <React.Fragment key={id}>
@@ -38,11 +37,7 @@ class UserList extends Component {
               to={{
                 pathname: '/posts',
               }}
-              onClick={() => {
-                console.log('id user', id)
-                console.log('id user', this.props.userId)
-                handleClick(id)
-              }}
+              onClick={() => handleClick(id)}
               className="content__link"
             >
               {name}
