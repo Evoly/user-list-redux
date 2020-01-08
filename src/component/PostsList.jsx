@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -13,6 +13,8 @@ const mapStateToProps = (state) => {
     posts: state.posts,
     userId: state.userId,
     postId: state.postId,
+    userName: state.userName,
+    postTitle: state.postTitle,
     error: state.error,
   };
   console.log('props postlist', props);
@@ -21,25 +23,25 @@ const mapStateToProps = (state) => {
 
 class PostsList extends Component {
   componentDidMount() {
-    this.props.dispatch(fetchPosts(url, this.props));
+    this.props.dispatch(fetchPosts(url, this.props)); // eslint-disable-line
+  }
+
+  handleClick(id, title) {
+    this.props.dispatch(fetchCommentsById(id, title)); // eslint-disable-line
   }
 
   render() {
-    const handleClick = (id) =>  this.props.dispatch(fetchCommentsById(id));
-
-    const { name } = this.props;
-    const title = name ? `${name} posts` : 'Posts list';
+    const { userName } = this.props;
+    console.log('posts this.props', this.props);
+    console.log('name', userName);
+    const postTitle = userName ? `${userName} posts` : 'Posts list';
     const { isLoading, posts } = this.props;
-    console.log('posts props', this.props);
-    console.log('posts', posts);
 
     let content = [];
 
     if (!isLoading) {
-      // const { userId } = posts[0] ? posts[0] : 0;
-
       content = posts.map(({
-        title, body, id, userId,
+        title, body, id,
       }) => (
         <React.Fragment key={id}>
           <div className="content__item">
@@ -47,7 +49,7 @@ class PostsList extends Component {
               to={{
                 pathname: '/comments',
               }}
-              onClick={() => handleClick(id)}
+              onClick={() => this.handleClick(id, title)}
               className="content__link"
             >
               {title}
@@ -62,7 +64,7 @@ class PostsList extends Component {
 
     return (
       <>
-        <h1> {title} </h1>
+        <h1> {postTitle} </h1>
         <div className="content">
           {content}
           <Link to="/" className="btn">Back</Link>
@@ -75,13 +77,17 @@ class PostsList extends Component {
 PostsList.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
-  id: PropTypes.number,
-  name: PropTypes.string,
+  posts: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+    }).isRequired,
+  ).isRequired,
+  userName: PropTypes.string,
 };
 
 PostsList.defaultProps = {
-  id: null,
-  name: '',
+  userName: '',
 };
 
 export default connect(mapStateToProps)(PostsList);

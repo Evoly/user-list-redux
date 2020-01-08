@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
@@ -32,6 +31,10 @@ const Home = () => (
   <UserList />
 );
 
+const Menu = () => (
+  <Header />
+);
+
 const Main = () => (
   <main className="container">
     <Switch>
@@ -47,7 +50,7 @@ const App = () => (
   <Provider store={store}>
     <BrowserRouter>
       <div>
-        <Header />
+        <Menu />
         <Main />
       </div>
     </BrowserRouter>

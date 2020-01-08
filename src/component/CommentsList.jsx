@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -11,8 +11,8 @@ const mapStateToProps = (state) => {
   const props = {
     isLoading: state.isLoading,
     comments: state.comments,
-    userId: state.userId,
     postId: state.postId,
+    postTitle: state.postTitle,
     error: state.error,
   };
   console.log('props comments', props);
@@ -21,11 +21,12 @@ const mapStateToProps = (state) => {
 
 class ComentsList extends Component {
   componentDidMount() {
-    this.props.dispatch(fetchComments(url, this.props));
+    this.props.dispatch(fetchComments(url, this.props)); // eslint-disable-line
   }
 
   render() {
-    const { name, userId, postTitle } = this.props;
+    const { postTitle } = this.props;
+    console.log('postTitle', postTitle);
 
     const title = postTitle ? (
       <h1> Comments on <span> &quot;{postTitle}&quot;</span> </h1>) : <h1> Comment list </h1>;
@@ -55,8 +56,6 @@ class ComentsList extends Component {
           <Link
             to={{
               pathname: '/posts',
-              userId,
-              userName: name,
             }}
             className="btn"
           >
@@ -69,16 +68,17 @@ class ComentsList extends Component {
 }
 
 ComentsList.propTypes = {
-  id: PropTypes.number,
-  name: PropTypes.string,
-  userId: PropTypes.number,
+  isLoading: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired,
   postTitle: PropTypes.string,
+  comments: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+    }).isRequired,
+  ).isRequired,
 };
 
 ComentsList.defaultProps = {
-  id: null,
-  name: '',
-  userId: null,
   postTitle: '',
 };
 

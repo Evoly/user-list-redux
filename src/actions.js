@@ -1,18 +1,16 @@
 import axios from 'axios';
 
-// const urlUsers = 'https://jsonplaceholder.typicode.com/users';
+const REQUEST_DATA = 'REQUEST_DATA';
+const REQUEST_USER_SUCCESS = 'REQUEST_USER_SUCCESS';
+const REQUEST_USER_FAILURE = 'REQUEST_USER_FAILURE';
 
-export const REQUEST_DATA = 'REQUEST_DATA';
-export const REQUEST_USER_SUCCESS = 'REQUEST_USER_SUCCESS';
-export const REQUEST_USER_FAILURE = 'REQUEST_USER_FAILURE';
+const REQUEST_POSTS_SUCCESS = 'REQUEST_POSTS_SUCCESS';
+const REQUEST_POSTS_BY_ID = 'REQUEST_POSTS_BY_ID';
+const REQUEST_POSTS_FAILURE = 'REQUEST_POSTS_FAILURE';
 
-export const REQUEST_POSTS_SUCCESS = 'REQUEST_POSTS_SUCCESS';
-export const REQUEST_POSTS_BY_ID = 'REQUEST_POSTS_BY_ID';
-export const REQUEST_POSTS_FAILURE = 'REQUEST_POSTS_FAILURE';
-
-export const REQUEST_COMMENTS_SUCCESS = 'REQUEST_COMMENTS_SUCCESS';
-export const REQUEST_COMMENTS_BY_ID = 'REQUEST_COMMENTS_BY_ID';
-export const REQUEST_COMMENTS_FAILURE = 'REQUEST_COMMENTS_FAILURE';
+const REQUEST_COMMENTS_SUCCESS = 'REQUEST_COMMENTS_SUCCESS';
+const REQUEST_COMMENTS_BY_ID = 'REQUEST_COMMENTS_BY_ID';
+const REQUEST_COMMENTS_FAILURE = 'REQUEST_COMMENTS_FAILURE';
 
 
 const requestData = () => ({
@@ -30,13 +28,10 @@ export const fetchUsersFailure = (error) => ({
   payload: { error },
 });
 
-export const fetchPostsById = (userId) => {
-  console.log('userId action', userId);
-  return ({
-    type: REQUEST_POSTS_BY_ID,
-    payload: { userId },
-  });
-};
+export const fetchPostsById = (userId, userName) => ({
+  type: REQUEST_POSTS_BY_ID,
+  payload: { userId, userName },
+});
 
 export const fetchPostsSuccess = (posts, userId) => ({
   type: REQUEST_POSTS_SUCCESS,
@@ -48,13 +43,14 @@ export const fetchPostsFailure = (error) => ({
   payload: { error },
 });
 
-export const fetchCommentsById = (postId) => {
+export const fetchCommentsById = (postId, postTitle) => {
   console.log('postId action', postId);
   return ({
     type: REQUEST_COMMENTS_BY_ID,
-    payload: { postId },
+    payload: { postId, postTitle },
   });
 };
+
 export const fetchCommentsSuccess = (comments, postId) => ({
   type: REQUEST_COMMENTS_SUCCESS,
   payload: { comments, postId },
@@ -77,10 +73,8 @@ export function fetchUsers(url) {
 export function fetchPosts(url, state) {
   return (dispatch) => {
     const { userId } = state;
-    console.log('fetchPosts', userId);
     dispatch(requestData());
     const urlPosts = userId > 0 ? `${url}?userId=${userId}` : url;
-    console.log('userId', userId);
     return axios.get(urlPosts)
       .then((response) => dispatch(fetchPostsSuccess(response.data)));
   };
@@ -89,10 +83,8 @@ export function fetchPosts(url, state) {
 export function fetchComments(url, state) {
   return (dispatch) => {
     const { postId } = state;
-    console.log('fetchComments', postId);
     dispatch(requestData());
     const urlPosts = postId > 0 ? `${url}?postId=${postId}` : url;
-    console.log('urlPosts', urlPosts);
     return axios.get(urlPosts)
       .then((response) => dispatch(fetchCommentsSuccess(response.data)));
   };

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Header = () => (
@@ -9,24 +9,16 @@ const Header = () => (
         <Link
           to={{
             pathname: '/posts',
-            userId: null,
-            userName: null,
           }}
           className="nav__link"
-          title="All posts"
         >
           Posts
         </Link>
         <Link
           to={{
             pathname: '/comments',
-            postId: null,
-            userId: null,
-            name: null,
-            postTitle: null,
           }}
           className="nav__link"
-          title="All comments"
         >
           Comments
         </Link>

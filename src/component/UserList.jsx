@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
     isLoading: state.isLoading,
     users: state.users,
     userId: state.id,
+    userName: state.userName,
     error: state.error,
   };
   return props;
@@ -20,14 +21,17 @@ const mapStateToProps = (state) => {
 
 class UserList extends Component {
   componentDidMount() {
-    this.props.dispatch(fetchUsers(urlUsers));
+    this.props.dispatch(fetchUsers(urlUsers)); // eslint-disable-line
+  }
+
+  handleClick = (id, name) => {
+    console.log('users name', name);
+    this.props.dispatch(fetchPostsById(id, name)); // eslint-disable-line
   }
 
   render() {
     const { isLoading, users } = this.props;
     let content = [];
-
-    const handleClick = (id) =>  this.props.dispatch(fetchPostsById(id));
 
     if (!isLoading) {
       content = users.map(({ name, id }) => (
@@ -37,7 +41,7 @@ class UserList extends Component {
               to={{
                 pathname: '/posts',
               }}
-              onClick={() => handleClick(id)}
+              onClick={() => this.handleClick(id, name)}
               className="content__link"
             >
               {name}

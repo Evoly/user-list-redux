@@ -1,12 +1,11 @@
-// import { createStore, applyMiddleware } from 'redux';
-// import thunk from 'redux-thunk';
-
 const initialState = {
   users: [],
   posts: [],
   comments: [],
   userId: 0,
   postId: 0,
+  userName: '',
+  postTitle: '',
   isLoading: false,
   error: null,
 };
@@ -29,7 +28,8 @@ function reducer(state = initialState, action) {
       console.log('state posts', state);
       return { ...state, isLoading: false, posts: action.payload.posts };
     case 'REQUEST_POSTS_BY_ID':
-      return { ...state, userId: action.payload.userId };
+      console.log('reducer name', action.payload.userName);
+      return { ...state, userId: action.payload.userId, userName: action.payload.userName };
     case 'REQUEST_POSTS_FAILURE':
       return {
         ...state,
@@ -40,7 +40,7 @@ function reducer(state = initialState, action) {
     case 'REQUEST_COMMENTS_SUCCESS':
       return { ...state, isLoading: false, comments: action.payload.comments };
     case 'REQUEST_COMMENTS_BY_ID':
-      return { ...state, postId: action.payload.postId };
+      return { ...state, postId: action.payload.postId, postTitle: action.payload.postTitle };
     case 'REQUEST_COMMENTS_FAILURE':
       return {
         ...state,
@@ -52,11 +52,5 @@ function reducer(state = initialState, action) {
       return state;
   }
 }
-
-
-// const store = createStore(
-//   reducer,
-//   applyMiddleware(thunk),
-// );
 
 export default reducer;
